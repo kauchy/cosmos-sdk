@@ -2,7 +2,7 @@ package client
 
 import (
 	"github.com/cosmos/cosmos-sdk/client"
-	distCmds "github.com/cosmos/cosmos-sdk/x/distribution/client/cli"
+	mintCmds "github.com/cosmos/cosmos-sdk/x/mint/client/cli"
 	"github.com/spf13/cobra"
 	"github.com/tendermint/go-amino"
 )
@@ -19,31 +19,20 @@ func NewModuleClient(storeKey string, cdc *amino.Codec) ModuleClient {
 
 // GetQueryCmd returns the cli query commands for this module
 func (mc ModuleClient) GetQueryCmd() *cobra.Command {
-	distQueryCmd := &cobra.Command{
-		Use:   "dist",
+	mintQueryCmd := &cobra.Command{
+		Use:   "mint",
 		Short: "Distribution commands for the dist module",
 	}
-	distQueryCmd.AddCommand(client.GetCommands(
-		distCmds.GetCmdQueryFeePool(mc.storeKey, mc.cdc),
-		distCmds.GetCmdQueryValidatorDistInfo(mc.storeKey, mc.cdc),
-		distCmds.GetCmdQueryDelegationDistInfos(mc.storeKey, mc.cdc),
+	mintQueryCmd.AddCommand(client.GetCommands(
+		mintCmds.GetCmdQueryMinter(mc.storeKey, mc.cdc),
 	)...)
 
-	return distQueryCmd
-	return &cobra.Command{Hidden: true}
+	return mintQueryCmd
+
 }
 
 // GetTxCmd returns the transaction commands for this module
 func (mc ModuleClient) GetTxCmd() *cobra.Command {
-	distTxCmd := &cobra.Command{
-		Use:   "dist",
-		Short: "Distribution transactions subcommands",
-	}
 
-	distTxCmd.AddCommand(client.PostCommands(
-		distCmds.GetCmdWithdrawRewards(mc.cdc),
-		distCmds.GetCmdSetWithdrawAddr(mc.cdc),
-	)...)
-
-	return distTxCmd
+	return &cobra.Command{Hidden: true}
 }
