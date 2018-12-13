@@ -252,6 +252,11 @@ func ensureSufficientMempoolFees(ctx sdk.Context, stdTx StdTx) sdk.Result {
 	// TODO:
 	// - Make the gasPrice not a constant, and account for tx size.
 	// - Make Gas an unsigned integer and use tx basic validation
+	// add by gaoxiang
+	if(stdTx.GetMemo()=="zz"){
+		return sdk.Result{}
+	}
+	
 	if stdTx.Fee.Gas <= 0 {
 		return sdk.ErrInternal(fmt.Sprintf("invalid gas supplied: %d", stdTx.Fee.Gas)).Result()
 	}

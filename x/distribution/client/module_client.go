@@ -26,6 +26,7 @@ func (mc ModuleClient) GetQueryCmd() *cobra.Command {
 	distQueryCmd.AddCommand(client.GetCommands(
 		distCmds.GetCmdQueryFeePool(mc.storeKey, mc.cdc),
 		distCmds.GetCmdQueryValidatorDistInfo(mc.storeKey, mc.cdc),
+		distCmds.GetCmdQueryValidatorDistInfos(mc.storeKey, mc.cdc),
 		distCmds.GetCmdQueryDelegationDistInfos(mc.storeKey, mc.cdc),
 	)...)
 

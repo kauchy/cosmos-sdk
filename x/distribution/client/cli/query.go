@@ -47,6 +47,40 @@ func GetCmdQueryFeePool(storeName string, cdc *codec.Codec) *cobra.Command {
 	return cmd
 }
 
+func GetCmdQueryValidatorDistInfos(storeName string, cdc *codec.Codec) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "vdis",
+		Short: "Query all ValidatorDistInfo",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			resKVs, err := cliCtx.QuerySubspace(distribution.ValidatorDistInfoKey, storeName)
+
+			if err != nil {
+				return err
+			}
+
+			var vdis []types.ValidatorDistInfo
+			for _, kv := range resKVs {
+				var vdi types.ValidatorDistInfo
+				cdc.MustUnmarshalBinaryLengthPrefixed(kv.Value, &vdi)
+				vdis = append(vdis, vdi)
+			}
+
+			var output []byte
+			output, err =  codec.MarshalJSONIndent(cdc, vdis)
+
+			if err != nil {
+				return err
+			}
+
+			fmt.Println(string(output))
+
+			return nil
+		},
+	}
+	return cmd
+}
+
 func GetCmdQueryValidatorDistInfo(storeName string, cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "vdi [operator-addr]",
