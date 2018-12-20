@@ -20,6 +20,18 @@ func NewModuleClient(storeKey string, cdc *amino.Codec) ModuleClient {
 
 // GetQueryCmd returns the cli query commands for this module
 func (mc ModuleClient) GetQueryCmd() *cobra.Command {
+	distQueryCmd := &cobra.Command{
+		Use:   "dist",
+		Short: "Distribution commands for the dist module",
+	}
+	distQueryCmd.AddCommand(client.GetCommands(
+		distCmds.GetCmdQueryFeePool(mc.storeKey, mc.cdc),
+		distCmds.GetCmdQueryValidatorDistInfo(mc.storeKey, mc.cdc),
+		distCmds.GetCmdQueryValidatorDistInfos(mc.storeKey, mc.cdc),
+		distCmds.GetCmdQueryDelegationDistInfos(mc.storeKey, mc.cdc),
+	)...)
+
+	return distQueryCmd
 	return &cobra.Command{Hidden: true}
 }
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/client/store"
 	"net/http"
 	"os"
 	"path"
@@ -10,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	amino "github.com/tendermint/go-amino"
+	"github.com/tendermint/go-amino"
 	"github.com/tendermint/tendermint/libs/cli"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -27,15 +28,17 @@ import (
 	gov "github.com/cosmos/cosmos-sdk/x/gov/client/rest"
 	slashing "github.com/cosmos/cosmos-sdk/x/slashing/client/rest"
 	stake "github.com/cosmos/cosmos-sdk/x/stake/client/rest"
+	mint "github.com/cosmos/cosmos-sdk/x/mint/client/rest"
+	dist "github.com/cosmos/cosmos-sdk/x/distribution/client/rest"
 
+	_ "github.com/cosmos/cosmos-sdk/client/lcd/statik"
 	authcmd "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
 	bankcmd "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
 	distClient "github.com/cosmos/cosmos-sdk/x/distribution/client"
 	govClient "github.com/cosmos/cosmos-sdk/x/gov/client"
 	slashingClient "github.com/cosmos/cosmos-sdk/x/slashing/client"
 	stakeClient "github.com/cosmos/cosmos-sdk/x/stake/client"
-
-	_ "github.com/cosmos/cosmos-sdk/client/lcd/statik"
+	mintClient "github.com/cosmos/cosmos-sdk/x/mint/client"
 )
 
 const (
@@ -44,6 +47,7 @@ const (
 	storeSlashing = "slashing"
 	storeStake    = "stake"
 	storeDist     = "distr"
+	storeMint     = "mint"
 )
 
 func main() {
@@ -71,6 +75,7 @@ func main() {
 		distClient.NewModuleClient(storeDist, cdc),
 		stakeClient.NewModuleClient(storeStake, cdc),
 		slashingClient.NewModuleClient(storeSlashing, cdc),
+		mintClient.NewModuleClient(storeMint, cdc),
 	}
 
 	rootCmd := &cobra.Command{
@@ -115,6 +120,7 @@ func queryCmd(cdc *amino.Codec, mc []sdk.ModuleClients) *cobra.Command {
 	}
 
 	queryCmd.AddCommand(
+		store.StoreCommand(cdc),
 		rpc.ValidatorCommand(),
 		rpc.BlockCommand(),
 		tx.SearchTxCmd(cdc),
@@ -155,7 +161,7 @@ func txCmd(cdc *amino.Codec, mc []sdk.ModuleClients) *cobra.Command {
 // NOTE: details on the routes added for each module are in the module documentation
 // NOTE: If making updates here you also need to update the test helper in client/lcd/test_helper.go
 func registerRoutes(rs *lcd.RestServer) {
-	registerSwaggerUI(rs)
+	//registerSwaggerUI(rs)
 	keys.RegisterRoutes(rs.Mux, rs.CliCtx.Indent)
 	rpc.RegisterRoutes(rs.CliCtx, rs.Mux)
 	tx.RegisterRoutes(rs.CliCtx, rs.Mux, rs.Cdc)
@@ -164,6 +170,8 @@ func registerRoutes(rs *lcd.RestServer) {
 	stake.RegisterRoutes(rs.CliCtx, rs.Mux, rs.Cdc, rs.KeyBase)
 	slashing.RegisterRoutes(rs.CliCtx, rs.Mux, rs.Cdc, rs.KeyBase)
 	gov.RegisterRoutes(rs.CliCtx, rs.Mux, rs.Cdc)
+	mint.RegisterRoutes(rs.CliCtx, rs.Mux, rs.Cdc,storeMint)
+	dist.RegisterRoutes(rs.CliCtx, rs.Mux, rs.Cdc,storeDist)
 }
 
 func registerSwaggerUI(rs *lcd.RestServer) {
