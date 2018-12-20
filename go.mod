@@ -52,7 +52,7 @@ require (
 	github.com/tendermint/btcd v0.0.0-20180816174608-e5840949ff4f // indirect
 	github.com/tendermint/go-amino v0.14.1
 	github.com/tendermint/iavl v0.12.0
-	github.com/tendermint/tendermint v0.27.0
+	github.com/tendermint/tendermint v0.27.3
 	github.com/zondax/ledger-goclient v0.1.0
 	golang.org/x/crypto v0.0.0-20181106171534-e4dc69e5b2fd
 	google.golang.org/grpc v1.16.0 // indirect
