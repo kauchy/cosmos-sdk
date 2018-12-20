@@ -121,6 +121,7 @@ github.com/tendermint/tendermint v0.27.0-dev1 h1:KwVYIeQjU4m8aZr6ID9xqZ+i3RiHRSZ
 github.com/tendermint/tendermint v0.27.0-dev1/go.mod h1:ymcPyWblXCplCPQjbOYbrF1fWnpslATMVqiGgWbZrlc=
 github.com/tendermint/tendermint v0.27.0 h1:PeH/nkYqzG7hEdKmG5aJZFCOi6aSr9nIUjC0Echtzjc=
 github.com/tendermint/tendermint v0.27.0/go.mod h1:ymcPyWblXCplCPQjbOYbrF1fWnpslATMVqiGgWbZrlc=
+github.com/tendermint/tendermint v0.27.3 h1:yJQhTEjFiNtTqO2OQTPnIYmy1Gj3EBqBik3c5wCY7nU=
 github.com/tendermint/tendermint v0.27.3/go.mod h1:ymcPyWblXCplCPQjbOYbrF1fWnpslATMVqiGgWbZrlc=
 github.com/zondax/ledger-goclient v0.1.0 h1:9JZVE1s565asON/yvxvpDB6k+xfel1BGuvlNflLCu+o=
 github.com/zondax/ledger-goclient v0.1.0/go.mod h1:ILyu7qO5zsod0bzyxY9NCMlFTb8AXZzJAJf0T85b2jA=
