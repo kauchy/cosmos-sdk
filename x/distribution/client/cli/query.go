@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/distribution"
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 )
 
@@ -158,6 +158,49 @@ func GetCmdQueryDelegationDistInfos(storeName string, cdc *codec.Codec) *cobra.C
 			return nil
 		},
 	}
+	return cmd
+}
+
+func GetCmdWithdrawResult(storeName string, cdc *codec.Codec) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "withdrawResult [operator-addr]",
+		Short: "Query a Validator Rewards With Dec",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			addr, err := sdk.ValAddressFromBech32(args[0])
+			if err != nil {
+				return err
+			}
+
+			params := distribution.NewQueryValidatorParams(addr)
+
+			bz, err := cdc.MarshalJSON(params)
+			res, err := cliCtx.QueryWithData("custom/distr/"+distribution.QueryWithdrawResult, bz)
+			if err != nil {
+				return err
+			}
+
+			var coins types.DecCoins
+			cdc.UnmarshalJSON(res, &coins)
+
+			var output []byte
+			if cliCtx.Indent {
+				output, err = cdc.MarshalJSONIndent(coins, "", "  ")
+			} else {
+				output, err = cdc.MarshalJSON(coins)
+			}
+
+			if err != nil {
+				return err
+			}
+
+			fmt.Println(string(output))
+
+			return nil
+		},
+	}
+
 	return cmd
 }
 

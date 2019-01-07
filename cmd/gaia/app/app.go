@@ -156,7 +156,8 @@ func NewGaiaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest b
 	app.QueryRouter().
 		AddRoute("gov", gov.NewQuerier(app.govKeeper)).
 		AddRoute(slashing.QuerierRoute, slashing.NewQuerier(app.slashingKeeper, app.cdc)).
-		AddRoute("stake", stake.NewQuerier(app.stakeKeeper, app.cdc))
+		AddRoute("stake", stake.NewQuerier(app.stakeKeeper, app.cdc)).
+		AddRoute(distr.QuerierRoute, distr.NewQuerier(app.distrKeeper, app.cdc))
 
 	// initialize BaseApp
 	app.MountStores(app.keyMain, app.keyAccount, app.keyStake, app.keyMint, app.keyDistr,
