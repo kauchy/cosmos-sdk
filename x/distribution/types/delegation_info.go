@@ -111,9 +111,9 @@ func (di DelegationDistInfo) CurrentRewards(wc WithdrawContext, vi ValidatorDist
 
 	totalDelAccum := vi.GetTotalDelAccum(wc.Height, totalDelShares)
 
-	if vi.DelAccum.Accum.IsZero() {
-		return DecCoins{}
-	}
+	//if vi.DelAccum.Accum.IsZero() {
+	//	return DecCoins{}
+	//}
 
 	rewards := vi.CurrentPoolRewards(wc)
 	accum := di.GetDelAccum(wc.Height, delegatorShares)
