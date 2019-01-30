@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/x/mint"
 	"net/http"
 	"os"
 	"path"
@@ -10,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	amino "github.com/tendermint/go-amino"
+	"github.com/tendermint/go-amino"
 	"github.com/tendermint/tendermint/libs/cli"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -37,6 +38,7 @@ import (
 	bankcmd "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
 	distClient "github.com/cosmos/cosmos-sdk/x/distribution/client"
 	govClient "github.com/cosmos/cosmos-sdk/x/gov/client"
+	mintClient "github.com/cosmos/cosmos-sdk/x/mint/client"
 	slashingClient "github.com/cosmos/cosmos-sdk/x/slashing/client"
 	stakingClient "github.com/cosmos/cosmos-sdk/x/staking/client"
 
@@ -68,6 +70,7 @@ func main() {
 		distClient.NewModuleClient(dist.StoreKey, cdc),
 		stakingClient.NewModuleClient(st.StoreKey, cdc),
 		slashingClient.NewModuleClient(sl.StoreKey, cdc),
+		mintClient.NewModuleClient(mint.StoreKey, cdc),
 	}
 
 	rootCmd := &cobra.Command{
