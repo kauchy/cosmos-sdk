@@ -50,7 +50,7 @@ require (
 	github.com/tendermint/btcd v0.1.1
 	github.com/tendermint/go-amino v0.14.1
 	github.com/tendermint/iavl v0.12.0
-	github.com/tendermint/tendermint v0.29.0
+	github.com/tendermint/tendermint v0.30.0-rc0
 	github.com/zondax/ledger-cosmos-go v0.9.2
 	golang.org/x/crypto v0.0.0-20181106171534-e4dc69e5b2fd
 	golang.org/x/sys v0.0.0-20190114130336-2be517255631 // indirect

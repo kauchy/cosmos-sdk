@@ -11,8 +11,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/utils"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	dist "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	authtxb "github.com/cosmos/cosmos-sdk/x/auth/client/txbuilder"
+	dist "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
 	"github.com/spf13/cobra"
@@ -127,10 +127,8 @@ func GetCmdWithdrawRewardsAndDelegate(cdc *codec.Codec) *cobra.Command {
 				WithAccountDecoder(cdc)
 
 			var widthdrawMsg sdk.Msg
-			addr, err := cliCtx.GetFromAddress()
-			if err != nil {
-				return err
-			}
+			addr := cliCtx.GetFromAddress()
+
 			valAddr := sdk.ValAddress(addr.Bytes())
 			widthdrawMsg = dist.NewMsgWithdrawValidatorCommission(valAddr)
 
@@ -141,12 +139,8 @@ func GetCmdWithdrawRewardsAndDelegate(cdc *codec.Codec) *cobra.Command {
 
 			delegateMsg := staking.NewMsgDelegate(addr, valAddr, amount)
 
-			if cliCtx.GenerateOnly {
-				return utils.PrintUnsignedStdTx(os.Stdout, txBldr, cliCtx, []sdk.Msg{widthdrawMsg,delegateMsg}, false)
-			}
-
 			// build and sign the transaction, then broadcast to Tendermint
-			return utils.CompleteAndBroadcastTxCli(txBldr, cliCtx, []sdk.Msg{widthdrawMsg,delegateMsg})
+			return utils.GenerateOrBroadcastMsgs(cliCtx ,txBldr, []sdk.Msg{widthdrawMsg,delegateMsg},false)
 		},
 	}
 	cmd.Flags().AddFlagSet(FsAmount)

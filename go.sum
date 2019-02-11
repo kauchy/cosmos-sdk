@@ -113,6 +113,8 @@ github.com/tendermint/iavl v0.12.0 h1:xcaFAr+ycqCj7WN1RzL2EfcBioRDOHcU1oWcg83K02
 github.com/tendermint/iavl v0.12.0/go.mod h1:EoKMMv++tDOL5qKKVnoIqtVPshRrEPeJ0WsgDOLAauM=
 github.com/tendermint/tendermint v0.29.0 h1:zaJwtaAQVUC4QxqImtpPlCpMGroVvPU0g75ZTlvmFg8=
 github.com/tendermint/tendermint v0.29.0/go.mod h1:ymcPyWblXCplCPQjbOYbrF1fWnpslATMVqiGgWbZrlc=
+github.com/tendermint/tendermint v0.30.0-rc0 h1:ZoCdEs93r2cD43rCVpZKIvH+nMzMj2dNSlZ75HNRxIw=
+github.com/tendermint/tendermint v0.30.0-rc0/go.mod h1:ymcPyWblXCplCPQjbOYbrF1fWnpslATMVqiGgWbZrlc=
 github.com/zondax/ledger-cosmos-go v0.9.2/go.mod h1:uhu/ldrtzhUH7RoWoTKK4MxBi/CXfyViVA0OCYTiHdM=
 golang.org/x/crypto v0.0.0-20170930174604-9419663f5a44/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/lint v0.0.0-20181026193005-c67002cb31c3/go.mod h1:UVdnD1Gm6xHRNCYTkRU2/jEulfH38KcIWyp/GAMgvoE=
