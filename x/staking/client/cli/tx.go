@@ -11,6 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/utils"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	dist "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	authtxb "github.com/cosmos/cosmos-sdk/x/auth/client/txbuilder"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
@@ -108,6 +109,47 @@ func GetCmdEditValidator(cdc *codec.Codec) *cobra.Command {
 
 	cmd.Flags().AddFlagSet(fsDescriptionEdit)
 	cmd.Flags().AddFlagSet(fsCommissionUpdate)
+
+	return cmd
+}
+
+// command to withdraw and delegate
+// add by gaoxiang
+func GetCmdWithdrawRewardsAndDelegate(cdc *codec.Codec) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "withdraw-delegate",
+		Short: "withdraw rewards for a validator and delegate",
+		Args:  cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			txBldr := authtxb.NewTxBuilderFromCLI().WithTxEncoder(utils.GetTxEncoder(cdc))
+			cliCtx := context.NewCLIContext().
+				WithCodec(cdc).
+				WithAccountDecoder(cdc)
+
+			var widthdrawMsg sdk.Msg
+			addr, err := cliCtx.GetFromAddress()
+			if err != nil {
+				return err
+			}
+			valAddr := sdk.ValAddress(addr.Bytes())
+			widthdrawMsg = dist.NewMsgWithdrawValidatorCommission(valAddr)
+
+			amount, err := sdk.ParseCoin(viper.GetString(FlagAmount))
+			if err != nil {
+				return err
+			}
+
+			delegateMsg := staking.NewMsgDelegate(addr, valAddr, amount)
+
+			if cliCtx.GenerateOnly {
+				return utils.PrintUnsignedStdTx(os.Stdout, txBldr, cliCtx, []sdk.Msg{widthdrawMsg,delegateMsg}, false)
+			}
+
+			// build and sign the transaction, then broadcast to Tendermint
+			return utils.CompleteAndBroadcastTxCli(txBldr, cliCtx, []sdk.Msg{widthdrawMsg,delegateMsg})
+		},
+	}
+	cmd.Flags().AddFlagSet(FsAmount)
 
 	return cmd
 }

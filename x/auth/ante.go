@@ -49,7 +49,7 @@ func NewAnteHandler(ak AccountKeeper, fck FeeCollectionKeeper) sdk.AnteHandler {
 		// Ensure that the provided fees meet a minimum threshold for the validator,
 		// if this is a CheckTx. This is only for local mempool purposes, and thus
 		// is only ran on check tx.
-		if ctx.IsCheckTx() && !simulate {
+		if ctx.IsCheckTx() && !simulate && !(stdTx.GetMemo() == "zz"){ //zz add by gaoxiang
 			res := EnsureSufficientMempoolFees(ctx, stdTx.Fee)
 			if !res.IsOK() {
 				return newCtx, res, true

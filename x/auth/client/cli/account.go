@@ -2,7 +2,9 @@ package cli
 
 import (
 	"github.com/spf13/cobra"
+	"strings"
 
+	"github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -21,7 +23,25 @@ func GetAccountCmd(storeName string, cdc *codec.Codec) *cobra.Command {
 			cliCtx := context.NewCLIContext().
 				WithCodec(cdc).WithAccountDecoder(cdc)
 
-			key, err := sdk.AccAddressFromBech32(args[0])
+			//key, err := sdk.AccAddressFromBech32(args[0])
+			// find the key to look up the account
+			addr := args[0]
+
+			var key sdk.AccAddress
+			var err error
+			if strings.HasPrefix(addr, sdk.Bech32PrefixAccAddr) {
+				key, err = sdk.AccAddressFromBech32(addr)
+				if err != nil {
+					return err
+				}
+			}else{
+				keyinfo, err := keys.GetKeyInfo(addr)
+				if err != nil {
+					return err
+				}
+				key=keyinfo.GetAddress()
+			}
+
 			if err != nil {
 				return err
 			}

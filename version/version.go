@@ -9,7 +9,7 @@ import (
 // Variables set by build flags
 var (
 	Commit        = ""
-	Version       = ""
+	Version       = "kauchy-v0.30.0"
 	VendorDirHash = ""
 )
 
